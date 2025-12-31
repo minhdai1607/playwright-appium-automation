@@ -4,8 +4,6 @@
   "description": "Mobile automation testing with Playwright and Appium",
   "scripts": {
     "test": "npx playwright test",
-    "test:smoke": "npx playwright test --grep @smoke",
-    "test:login": "npx playwright test tests/login/",
     "appium:start": "appium --address 127.0.0.1 --port 4723",
     "report": "npx playwright show-report",
     "allure:generate": "npx allure generate ./reports/allure-results --clean",
@@ -13,8 +11,8 @@
   },
   "dependencies": {
     "@playwright/test": "^1.57.0",
-    "appium": "^2.12.0",
     "dotenv": "^16.4.5",
+    "googleapis": "^168.0.0",
     "webdriverio": "^9.0.0"
   },
   "devDependencies": {

@@ -189,14 +189,17 @@ test.describe('Product Tests', () => {
 // Resource ID
 'id=com.example:id/element_id'
 
-// XPath
+// descriptionContain(text)
+'android=new UiSelector().descriptionContains("Seekers Alliance")'
+
+// Android UIAutomator
+'android=new UiSelector().text("Login")'
+
+// XPath -> do not recommend
 '//android.widget.Button[@text="Login"]'
 
 // Class name
 'android.widget.EditText'
-
-// Android UIAutomator
-'android=new UiSelector().text("Login")'
 ```
 
 ## Troubleshooting

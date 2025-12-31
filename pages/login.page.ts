@@ -4,60 +4,30 @@ import { logger } from '../utils/logger';
 
 export class LoginPage extends BasePage {
   private selectors = {
-    usernameInput: '~username',
-    passwordInput: '~password',
-    loginButton: '~loginButton',
-    errorMessage: '~errorMessage',
-    forgotPasswordLink: '~forgotPassword',
-    registerLink: '~register',
+    emailInput: 'android=new UiSelector().text("Please enter your email address")',
+    sendcodeButton: '~Send Code',
   };
-
+  private errorMessage = {
+    invalidEmail: 'android=new UiSelector().textContains("Invalid email address")',
+  }
+  
   constructor(driver: Browser) {
     super(driver);
   }
 
-  async enterUsername(username: string): Promise<void> {
-    logger.info(`Entering username: ${username}`);
-    await this.type(this.selectors.usernameInput, username);
+  async enterEmail(username: string): Promise<void> {
+    logger.info(`Entering Email Account: ${username}`);
+    await this.type(this.selectors.emailInput, username);
   }
 
-  async enterPassword(password: string): Promise<void> {
-    logger.info('Entering password');
-    await this.type(this.selectors.passwordInput, password);
-  }
-
-  async clickLoginButton(): Promise<void> {
-    logger.info('Clicking login button');
+  async clickSendcodeButton(): Promise<void> {
+    logger.info('Clicking Send Code button');
     await this.hideKeyboard();
-    await this.click(this.selectors.loginButton);
+    await this.click(this.selectors.sendcodeButton);
   }
 
-  async login(username: string, password: string): Promise<void> {
-    logger.step(1, 'Enter credentials');
-    await this.enterUsername(username);
-    await this.enterPassword(password);
-    
-    logger.step(2, 'Click login button');
-    await this.clickLoginButton();
+  async isInvalidEmailErrorDisplayed(): Promise<boolean> {
+    return await this.isDisplayed(this.errorMessage.invalidEmail);
   }
 
-  async getErrorMessage(): Promise<string> {
-    return this.getText(this.selectors.errorMessage);
-  }
-
-  async isErrorDisplayed(): Promise<boolean> {
-    return this.isDisplayed(this.selectors.errorMessage);
-  }
-
-  async clickForgotPassword(): Promise<void> {
-    await this.click(this.selectors.forgotPasswordLink);
-  }
-
-  async clickRegister(): Promise<void> {
-    await this.click(this.selectors.registerLink);
-  }
-
-  async isOnLoginPage(): Promise<boolean> {
-    return this.isDisplayed(this.selectors.loginButton);
-  }
 }

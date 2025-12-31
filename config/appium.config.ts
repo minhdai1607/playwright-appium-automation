@@ -1,8 +1,10 @@
+import { env } from "./env";
+
 export const appiumConfig = {
   server: {
-    host: '127.0.0.1',
-    port: 4723,
-    path: '/',
+    host: env.appiumHost,
+    port: env.appiumPort,
+    path: env.path,
   },
 
   timeouts: {

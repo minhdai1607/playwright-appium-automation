@@ -3,21 +3,19 @@ import { Browser } from 'webdriverio';
 import { AppiumDriver } from '../utils/driver';
 import { LoginPage } from '../pages/login.page';
 import { HomePage } from '../pages/home.page';
-import { BottomNavigation } from '../pages/common/bottom-nav.page';
-import { WaitHelper } from '../utils/wait.helper';
-import { GestureHelper } from '../utils/gesture.helper';
+import { ExplorePage } from '../pages/explore.page';
+import { EventPage } from '../pages/event.page';
 import { logger } from '../utils/logger';
 
 type MobileFixtures = {
   driver: Browser;
   loginPage: LoginPage;
   homePage: HomePage;
-  bottomNav: BottomNavigation;
-  wait: WaitHelper;
-  gesture: GestureHelper;
+  explorePage: ExplorePage;
+  eventPage: EventPage;
 };
 
-export const test = base.extend<MobileFixtures>({
+export const carv = base.extend<MobileFixtures>({
   driver: async ({}, use) => {
     logger.testStart('Initializing Appium Driver');
     const driver = await AppiumDriver.createDriver();
@@ -35,20 +33,11 @@ export const test = base.extend<MobileFixtures>({
     await use(homePage);
   },
 
-  bottomNav: async ({ driver }, use) => {
-    const bottomNav = new BottomNavigation(driver);
-    await use(bottomNav);
+  explorePage: async ({ driver }, use) => {
+    const explorePage = new ExplorePage(driver);
+    await use(explorePage);
   },
 
-  wait: async ({ driver }, use) => {
-    const wait = new WaitHelper(driver);
-    await use(wait);
-  },
-
-  gesture: async ({ driver }, use) => {
-    const gesture = new GestureHelper(driver);
-    await use(gesture);
-  },
 });
 
 export { expect } from '@playwright/test';

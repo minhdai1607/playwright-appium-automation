@@ -10,13 +10,12 @@ export interface DeviceConfig {
 
 export const devices: Record<string, DeviceConfig> = {
   realDevice: {
-    deviceName: 'YOUR_DEVICE_NAME',
+    deviceName: 'Samsung Galaxy A07',
     platformName: 'Android',
-    platformVersion: 'YOUR_ANDROID_VERSION',
-    udid: 'YOUR_DEVICE_ID',
-    app: './apps/demo-app.apk',
-    appPackage: 'YOUR_APP_PACKAGE',
-    appActivity: 'YOUR_APP_ACTIVITY',
+    platformVersion: '15',
+    udid: 'R83Y81FLEMM',
+    appPackage: 'io.carv.mobileapp',
+    appActivity: 'io.carv.mobileapp.MainActivity'
   },
 
   emulator: {

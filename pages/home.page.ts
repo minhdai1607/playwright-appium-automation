@@ -1,61 +1,75 @@
 import { Browser } from 'webdriverio';
 import { BasePage } from './base.page';
 import { logger } from '../utils/logger';
-
 export class HomePage extends BasePage {
-  private selectors = {
-    welcomeText: '~welcomeText',
-    userAvatar: '~userAvatar',
-    menuButton: '~menuButton',
-    searchBar: '~searchBar',
-    notificationIcon: '~notification',
-    logoutButton: '~logout',
+  private notificationIcon = '~Notification';
+  private searchIcon = '//android.widget.ScrollView//android.view.ViewGroup[@clickable="true" and @focusable="true"][1]';
+  private historyText = 'android=new UiSelector().text("History")';
+  private eventCard = {
+    blockLords: 'android=new UiSelector().descriptionContains("Block Lords")',
+    seekersAlliance: 'android=new UiSelector().descriptionContains("Seekers Alliance")',
   };
-
+  private selectors = {
+    exploreTab: '~Khám phá',
+    eventsTab: '~Sự kiện',
+    earnTab: '~Earn',
+    profileTab: '~Profile',
+  };
   constructor(driver: Browser) {
     super(driver);
   }
-
-  async getWelcomeText(): Promise<string> {
-    logger.info('Getting welcome text');
-    return this.getText(this.selectors.welcomeText);
+  async goToExplore(): Promise<void> {
+    logger.info('Navigating to Explore tab');
+    await this.click(this.selectors.exploreTab);
   }
 
-  async isOnHomePage(): Promise<boolean> {
-    logger.info('Checking if on home page');
-    return this.isDisplayed(this.selectors.welcomeText);
+  async goToEvents(): Promise<void> {
+    logger.info('Navigating to Events tab');
+    await this.click(this.selectors.eventsTab);
   }
 
-  async clickUserAvatar(): Promise<void> {
-    logger.info('Clicking user avatar');
-    await this.click(this.selectors.userAvatar);
+  async goToEarn(): Promise<void> {
+    logger.info('Navigating to Earn tab');
+    await this.click(this.selectors.earnTab);
   }
 
-  async openMenu(): Promise<void> {
-    logger.info('Opening menu');
-    await this.click(this.selectors.menuButton);
+  async goToProfile(): Promise<void> {
+    logger.info('Navigating to Profile tab');
+    await this.click(this.selectors.profileTab);
   }
 
-  async search(keyword: string): Promise<void> {
-    logger.info(`Searching for: ${keyword}`);
-    await this.click(this.selectors.searchBar);
-    await this.type(this.selectors.searchBar, keyword);
-    await this.hideKeyboard();
+  async isTabDisplayed(tabName: 'explore' | 'events' | 'earn' | 'profile'): Promise<boolean> {
+    const selectorMap = {
+      explore: this.selectors.exploreTab,
+      events: this.selectors.eventsTab,
+      earn: this.selectors.earnTab,
+      profile: this.selectors.profileTab,
+    };
+    return this.isDisplayed(selectorMap[tabName]);
   }
-
   async clickNotification(): Promise<void> {
     logger.info('Clicking notification');
-    await this.click(this.selectors.notificationIcon);
+    await this.click(this.notificationIcon);
   }
 
-  async logout(): Promise<void> {
-    logger.info('Logging out');
-    await this.openMenu();
-    await this.click(this.selectors.logoutButton);
+  async clickSearch(): Promise<void> {
+    logger.info('Clicking search');
+    await this.click(this.searchIcon);
   }
 
-  async waitForPageLoad(timeout: number = 10000): Promise<void> {
-    logger.info('Waiting for home page to load');
-    await this.wait.waitForVisible(this.selectors.welcomeText, timeout);
+  async clickHistory(): Promise<void> {
+    logger.info('Clicking history');
+    await this.click(this.historyText);
   }
+  
+  async clickBlockLords(): Promise<void> {
+    logger.info('Clicking Block Lords');
+    await this.click(this.eventCard.blockLords);
+  }
+  
+  async clickSeekersAlliance(): Promise<void> {
+    logger.info('Clicking Seekers Alliance');
+    await this.click(this.eventCard.seekersAlliance);
+  }
+
 }

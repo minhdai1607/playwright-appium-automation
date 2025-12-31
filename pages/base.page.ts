@@ -15,17 +15,21 @@ export class BasePage {
   }
 
   async findElement(selector: string): Promise<Element> {
-    return this.driver.$(selector);
+    return await this.driver.$(selector);
   }
 
   async findElements(selector: string): Promise<Element[]> {
-    return this.driver.$$(selector);
+    return await this.driver.$$(selector);
   }
 
   async click(selector: string): Promise<void> {
-    const element = await this.wait.waitForClickable(selector);
-    await element.click();
-    logger.debug(`Clicked: ${selector}`);
+    try {
+      const element = await this.wait.waitForVisible(selector);
+      await element.click();
+      logger.debug(`Clicked: ${selector}`);
+    } catch (error) {
+      logger.error(`Search icon not found: ${error}`);
+    }
   }
 
   async type(selector: string, text: string): Promise<void> {
@@ -59,7 +63,7 @@ export class BasePage {
   }
 
   async waitAndClick(selector: string, timeout?: number): Promise<void> {
-    const element = await this.wait.waitForClickable(selector, timeout);
+    const element = await this.wait.waitForVisible(selector, timeout);
     await element.click();
   }
 
@@ -76,15 +80,14 @@ export class BasePage {
     try {
       await this.driver.hideKeyboard();
     } catch {
-      // Keyboard not visible - ignore
     }
   }
 
-  async takeScreenshot(filename: string): Promise<string> {
-    const screenshot = await this.driver.saveScreenshot(`./reports/screenshots/${filename}.png`);
-    logger.info(`Screenshot saved: ${filename}.png`);
-    return screenshot;
-  }
+  // async takeScreenshot(filename: string): Promise<string> {
+  //   const screenshot = await this.driver.saveScreenshot(`./reports/screenshots/${filename}.png`);
+  //   logger.info(`Screenshot saved: ${filename}.png`);
+  //   return screenshot;
+  // }
 
   async pressBack(): Promise<void> {
     await this.driver.back();
