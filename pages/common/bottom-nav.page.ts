@@ -3,14 +3,13 @@ import { BasePage } from '../base.page';
 import { logger } from '../../utils/logger';
 
 export class BottomNavigation extends BasePage {
-
   private selectors = {
-    homeTab: '~homeTab',           // Thay bằng ID thực tế
-    searchTab: '~searchTab',       // Thay bằng ID thực tế
-    cartTab: '~cartTab',           // Thay bằng ID thực tế
-    profileTab: '~profileTab',     // Thay bằng ID thực tế
-    settingsTab: '~settingsTab',   // Thay bằng ID thực tế
-    cartBadge: '~cartBadge',       // Badge số lượng trên cart
+    homeTab: '~homeTab',
+    searchTab: '~searchTab',
+    cartTab: '~cartTab',
+    profileTab: '~profileTab',
+    settingsTab: '~settingsTab',
+    cartBadge: '~cartBadge',
   };
 
   constructor(driver: Browser) {
@@ -18,27 +17,27 @@ export class BottomNavigation extends BasePage {
   }
 
   async goToHome(): Promise<void> {
-    logger.info('Chuyển đến tab Home');
+    logger.info('Navigating to Home tab');
     await this.click(this.selectors.homeTab);
   }
 
   async goToSearch(): Promise<void> {
-    logger.info('Chuyển đến tab Search');
+    logger.info('Navigating to Search tab');
     await this.click(this.selectors.searchTab);
   }
 
   async goToCart(): Promise<void> {
-    logger.info('Chuyển đến tab Cart');
+    logger.info('Navigating to Cart tab');
     await this.click(this.selectors.cartTab);
   }
 
   async goToProfile(): Promise<void> {
-    logger.info('Chuyển đến tab Profile');
+    logger.info('Navigating to Profile tab');
     await this.click(this.selectors.profileTab);
   }
 
   async goToSettings(): Promise<void> {
-    logger.info('Chuyển đến tab Settings');
+    logger.info('Navigating to Settings tab');
     await this.click(this.selectors.settingsTab);
   }
 
@@ -64,5 +63,3 @@ export class BottomNavigation extends BasePage {
     return selected === 'true';
   }
 }
-
-

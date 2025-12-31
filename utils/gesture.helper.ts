@@ -1,10 +1,6 @@
 import { Browser } from 'webdriverio';
 import { logger } from './logger';
 
-/**
- * Gesture Helper
- * Các thao tác cử chỉ: swipe, scroll, tap, long press
- */
 export class GestureHelper {
   private driver: Browser;
 
@@ -12,9 +8,6 @@ export class GestureHelper {
     this.driver = driver;
   }
 
-  /**
-   * Swipe từ điểm này sang điểm khác
-   */
   async swipe(
     startX: number,
     startY: number,
@@ -22,8 +15,6 @@ export class GestureHelper {
     endY: number,
     duration: number = 800
   ): Promise<void> {
-    logger.info(`👆 Swipe từ (${startX}, ${startY}) đến (${endX}, ${endY})`);
-    
     await this.driver.performActions([
       {
         type: 'pointer',
@@ -42,10 +33,7 @@ export class GestureHelper {
     await this.driver.releaseActions();
   }
 
-  /**
-   * Swipe lên (scroll xuống)
-   */
-  async swipeUp(percentage: number = 0.5): Promise<void> {
+  async swipeUp(): Promise<void> {
     const { width, height } = await this.driver.getWindowSize();
     const startX = width / 2;
     const startY = height * 0.7;
@@ -54,10 +42,7 @@ export class GestureHelper {
     await this.swipe(startX, startY, startX, endY);
   }
 
-  /**
-   * Swipe xuống (scroll lên)
-   */
-  async swipeDown(percentage: number = 0.5): Promise<void> {
+  async swipeDown(): Promise<void> {
     const { width, height } = await this.driver.getWindowSize();
     const startX = width / 2;
     const startY = height * 0.3;
@@ -66,9 +51,6 @@ export class GestureHelper {
     await this.swipe(startX, startY, startX, endY);
   }
 
-  /**
-   * Swipe sang trái
-   */
   async swipeLeft(): Promise<void> {
     const { width, height } = await this.driver.getWindowSize();
     const startX = width * 0.8;
@@ -78,9 +60,6 @@ export class GestureHelper {
     await this.swipe(startX, y, endX, y);
   }
 
-  /**
-   * Swipe sang phải
-   */
   async swipeRight(): Promise<void> {
     const { width, height } = await this.driver.getWindowSize();
     const startX = width * 0.2;
@@ -90,9 +69,6 @@ export class GestureHelper {
     await this.swipe(startX, y, endX, y);
   }
 
-  /**
-   * Scroll đến khi tìm thấy element
-   */
   async scrollToElement(
     selector: string,
     maxScrolls: number = 5,
@@ -103,7 +79,7 @@ export class GestureHelper {
     while (scrollCount < maxScrolls) {
       const element = await this.driver.$(selector);
       if (await element.isDisplayed()) {
-        logger.info(`✅ Tìm thấy element sau ${scrollCount} lần scroll`);
+        logger.info(`Element found after ${scrollCount} scrolls`);
         return;
       }
       
@@ -117,15 +93,10 @@ export class GestureHelper {
       await this.driver.pause(500);
     }
     
-    throw new Error(`Không tìm thấy element "${selector}" sau ${maxScrolls} lần scroll`);
+    throw new Error(`Element "${selector}" not found after ${maxScrolls} scrolls`);
   }
 
-  /**
-   * Tap vào tọa độ
-   */
   async tapByCoordinates(x: number, y: number): Promise<void> {
-    logger.info(`👆 Tap tại (${x}, ${y})`);
-    
     await this.driver.performActions([
       {
         type: 'pointer',
@@ -143,9 +114,6 @@ export class GestureHelper {
     await this.driver.releaseActions();
   }
 
-  /**
-   * Long press vào element
-   */
   async longPress(selector: string, duration: number = 2000): Promise<void> {
     const element = await this.driver.$(selector);
     const location = await element.getLocation();
@@ -153,8 +121,6 @@ export class GestureHelper {
     
     const centerX = location.x + size.width / 2;
     const centerY = location.y + size.height / 2;
-
-    logger.info(`👆 Long press tại (${centerX}, ${centerY}) trong ${duration}ms`);
 
     await this.driver.performActions([
       {
@@ -173,13 +139,8 @@ export class GestureHelper {
     await this.driver.releaseActions();
   }
 
-  /**
-   * Double tap
-   */
   async doubleTap(selector: string): Promise<void> {
     const element = await this.driver.$(selector);
     await element.doubleClick();
   }
 }
-
-

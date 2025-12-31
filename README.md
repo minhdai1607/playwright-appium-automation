@@ -1,20 +1,17 @@
 # Playwright Appium Automation
 
-Mobile automation testing framework với Playwright Test Runner và Appium.
+Mobile automation testing framework with Playwright Test Runner and Appium.
 
-## 📁 Cấu trúc Project
+## Project Structure
 
 ```
 playwright-appium-automation/
-│
 ├── apps/                       # App under test
-│   └── demo-app.apk            # APK file của bạn
-│
+│   └── demo-app.apk
 ├── config/
-│   ├── appium.config.ts        # Appium server & capability config
-│   ├── devices.ts              # Device/emulator definitions ⚠️ CẦN SỬA
-│   └── env.ts                  # Environment config (stg / prod / local)
-│
+│   ├── appium.config.ts        # Appium server configuration
+│   ├── devices.ts              # Device definitions
+│   └── env.ts                  # Environment config
 ├── tests/
 │   ├── login/
 │   │   └── login.spec.ts
@@ -22,155 +19,119 @@ playwright-appium-automation/
 │   │   └── home.spec.ts
 │   └── smoke/
 │       └── smoke.spec.ts
-│
 ├── pages/                      # Page Object Model
 │   ├── base.page.ts
-│   ├── login.page.ts           # ⚠️ CẦN SỬA SELECTORS
-│   ├── home.page.ts            # ⚠️ CẦN SỬA SELECTORS
+│   ├── login.page.ts
+│   ├── home.page.ts
 │   └── common/
 │       └── bottom-nav.page.ts
-│
 ├── utils/
 │   ├── driver.ts               # Appium driver wrapper
 │   ├── wait.helper.ts
-│   ├── gesture.helper.ts       # swipe, scroll, tap
+│   ├── gesture.helper.ts
 │   └── logger.ts
-│
 ├── test-data/
 │   ├── users.json
 │   └── constants.ts
-│
 ├── fixtures/
 │   └── mobile.fixture.ts       # Playwright custom fixture
-│
 ├── reports/
-│   ├── allure-results/
-│   └── playwright-report/
-│
 ├── scripts/
-│   ├── start-appium.ps1        # Windows
-│   └── start-appium.sh         # Mac/Linux
-│
-├── env.example
+│   ├── start-appium.ps1
+│   └── start-appium.sh
 ├── playwright.config.ts
 ├── package.json
-├── tsconfig.json
-└── .gitignore
+└── tsconfig.json
 ```
 
-## 🚀 Cài đặt
+## Installation
 
-### 1. Yêu cầu
+### Prerequisites
 
 - Node.js >= 18
 - Java JDK 11+
-- Android SDK (đã cài `adb`)
+- Android SDK with `adb`
 - Appium 2.x
 
-### 2. Cài đặt dependencies
+### Setup
 
 ```bash
+# Install dependencies
 npm install
-```
 
-### 3. Cài đặt Appium globally
-
-```bash
+# Install Appium globally
 npm install -g appium
 appium driver install uiautomator2
-```
 
-### 4. Verify cài đặt
-
-```bash
-# Kiểm tra adb
+# Verify installation
 adb devices
-
-# Kiểm tra appium
 appium --version
 ```
 
-## ⚙️ Cấu hình Device
+## Device Configuration
 
-### Bước 1: Lấy thông tin device
+### Step 1: Get device information
 
 ```bash
-# Lấy Device ID
+# Get Device ID
 adb devices
 
-# Lấy Android version
+# Get Android version
 adb shell getprop ro.build.version.release
 
-# Lấy package và activity của app
+# Get app package and activity
 adb shell dumpsys window | findstr mCurrentFocus
 ```
 
-### Bước 2: Cập nhật `config/devices.ts`
+### Step 2: Update `config/devices.ts`
 
 ```typescript
 export const devices = {
   realDevice: {
-    deviceName: 'Samsung Galaxy S21',      // Tên device
+    deviceName: 'Samsung Galaxy S21',
     platformName: 'Android',
-    platformVersion: '13',                  // Android version
-    udid: 'RF8M33XXXXX',                   // Device ID từ adb devices
-    app: './apps/demo-app.apk',            // Đường dẫn APK
-    appPackage: 'com.example.app',         // Package name
-    appActivity: 'com.example.MainActivity', // Main activity
+    platformVersion: '13',
+    udid: 'RF8M33XXXXX',
+    app: './apps/demo-app.apk',
+    appPackage: 'com.example.app',
+    appActivity: 'com.example.MainActivity',
   },
 };
 ```
 
-### Bước 3: Cập nhật Selectors trong Pages
+### Step 3: Update selectors in Page files
 
-Mở các file trong `pages/` và cập nhật selectors theo app của bạn:
+Update selectors in `pages/login.page.ts` and `pages/home.page.ts` to match your app.
 
-```typescript
-// pages/login.page.ts
-private selectors = {
-  usernameInput: '~username',        // Accessibility ID
-  // hoặc
-  usernameInput: 'id=com.example:id/username',  // Resource ID
-  // hoặc
-  usernameInput: '//android.widget.EditText[@text="Username"]', // XPath
-};
-```
+## Running Tests
 
-## 🏃 Chạy Test
-
-### 1. Khởi động Appium Server
+### Start Appium Server
 
 ```bash
 # Windows PowerShell
 .\scripts\start-appium.ps1
 
-# Hoặc chạy trực tiếp
+# Or directly
 npm run appium:start
 ```
 
-### 2. Kết nối device
-
-- Bật USB Debugging trên điện thoại
-- Kết nối USB với máy tính
-- Chạy `adb devices` để verify
-
-### 3. Chạy test
+### Run Tests
 
 ```bash
-# Chạy tất cả test
+# Run all tests
 npm test
 
-# Chạy smoke test
+# Run smoke tests
 npm run test:smoke
 
-# Chạy login test
+# Run login tests
 npm run test:login
 
-# Chạy test cụ thể
+# Run specific test file
 npx playwright test tests/login/login.spec.ts
 ```
 
-## 📊 Xem Report
+## View Reports
 
 ```bash
 # Playwright HTML Report
@@ -181,9 +142,9 @@ npm run allure:generate
 npm run allure:open
 ```
 
-## 📝 Viết Test Case Mới
+## Writing New Tests
 
-### 1. Tạo Page Object (nếu cần)
+### Create a Page Object
 
 ```typescript
 // pages/product.page.ts
@@ -206,7 +167,7 @@ export class ProductPage extends BasePage {
 }
 ```
 
-### 2. Tạo Test File
+### Create a Test File
 
 ```typescript
 // tests/product/product.spec.ts
@@ -214,23 +175,15 @@ import { test, expect } from '../../fixtures/mobile.fixture';
 
 test.describe('Product Tests', () => {
   test('Add product to cart', async ({ driver }) => {
-    // Test code here
+    // Test implementation
   });
 });
 ```
 
-## 🔍 Cách tìm Selectors
-
-### Dùng Appium Inspector
-
-1. Tải Appium Inspector: https://github.com/appium/appium-inspector/releases
-2. Kết nối với Appium server
-3. Inspect elements trên app
-
-### Các loại Selector phổ biến
+## Selector Types
 
 ```typescript
-// Accessibility ID (khuyên dùng)
+// Accessibility ID (recommended)
 '~elementId'
 
 // Resource ID
@@ -246,24 +199,18 @@ test.describe('Product Tests', () => {
 'android=new UiSelector().text("Login")'
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-### Lỗi: "Could not start a new session"
-- Kiểm tra Appium server đang chạy
-- Kiểm tra device đã kết nối (`adb devices`)
-- Kiểm tra thông tin device trong `config/devices.ts`
+### Error: "Could not start a new session"
+- Check Appium server is running
+- Verify device is connected (`adb devices`)
+- Check device config in `config/devices.ts`
 
-### Lỗi: "Element not found"
-- Kiểm tra selector đúng chưa
-- Thêm wait trước khi tìm element
-- Dùng Appium Inspector để verify selector
+### Error: "Element not found"
+- Verify selector is correct
+- Add wait before finding element
+- Use Appium Inspector to verify selector
 
-### Lỗi: "App not installed"
-- Kiểm tra đường dẫn APK đúng chưa
-- Kiểm tra APK có tồn tại trong `apps/` folder
-
-## 📚 Tài liệu tham khảo
-
-- [Appium Documentation](https://appium.io/docs/en/2.1/)
-- [WebdriverIO Documentation](https://webdriver.io/docs/gettingstarted)
-- [Playwright Test Documentation](https://playwright.dev/docs/test-intro)
+### Error: "App not installed"
+- Check APK path is correct
+- Verify APK exists in `apps/` folder

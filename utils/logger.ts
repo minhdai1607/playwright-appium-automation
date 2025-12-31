@@ -1,8 +1,3 @@
-/**
- * Simple Logger
- * Log với màu sắc và timestamp
- */
-
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
 class Logger {
@@ -12,8 +7,7 @@ class Logger {
 
   private formatMessage(level: LogLevel, message: string): string {
     const timestamp = this.getTimestamp();
-    const prefix = `[${timestamp}] [${level.toUpperCase()}]`;
-    return `${prefix} ${message}`;
+    return `[${timestamp}] [${level.toUpperCase()}] ${message}`;
   }
 
   info(message: string): void {
@@ -35,22 +29,20 @@ class Logger {
   }
 
   step(stepNumber: number, description: string): void {
-    console.log(`\n📌 Step ${stepNumber}: ${description}`);
+    console.log(`\nStep ${stepNumber}: ${description}`);
   }
 
   testStart(testName: string): void {
     console.log(`\n${'='.repeat(60)}`);
-    console.log(`🧪 TEST: ${testName}`);
+    console.log(`TEST: ${testName}`);
     console.log(`${'='.repeat(60)}`);
   }
 
   testEnd(testName: string, passed: boolean): void {
-    const status = passed ? '✅ PASSED' : '❌ FAILED';
+    const status = passed ? 'PASSED' : 'FAILED';
     console.log(`\n${status}: ${testName}`);
     console.log(`${'='.repeat(60)}\n`);
   }
 }
 
 export const logger = new Logger();
-
-

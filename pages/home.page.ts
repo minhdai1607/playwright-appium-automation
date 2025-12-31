@@ -3,14 +3,13 @@ import { BasePage } from './base.page';
 import { logger } from '../utils/logger';
 
 export class HomePage extends BasePage {
-
   private selectors = {
-    welcomeText: '~welcomeText',      // Thay bằng ID thực tế
-    userAvatar: '~userAvatar',        // Thay bằng ID thực tế
-    menuButton: '~menuButton',        // Thay bằng ID thực tế
-    searchBar: '~searchBar',          // Thay bằng ID thực tế
-    notificationIcon: '~notification', // Thay bằng ID thực tế
-    logoutButton: '~logout',          // Thay bằng ID thực tế
+    welcomeText: '~welcomeText',
+    userAvatar: '~userAvatar',
+    menuButton: '~menuButton',
+    searchBar: '~searchBar',
+    notificationIcon: '~notification',
+    logoutButton: '~logout',
   };
 
   constructor(driver: Browser) {
@@ -18,45 +17,45 @@ export class HomePage extends BasePage {
   }
 
   async getWelcomeText(): Promise<string> {
-    logger.info('📖 Đọc welcome text');
+    logger.info('Getting welcome text');
     return this.getText(this.selectors.welcomeText);
   }
 
   async isOnHomePage(): Promise<boolean> {
-    logger.info('🔍 Kiểm tra đang ở trang Home');
+    logger.info('Checking if on home page');
     return this.isDisplayed(this.selectors.welcomeText);
   }
 
   async clickUserAvatar(): Promise<void> {
-    logger.info('🖱️ Click user avatar');
+    logger.info('Clicking user avatar');
     await this.click(this.selectors.userAvatar);
   }
 
   async openMenu(): Promise<void> {
-    logger.info('🖱️ Mở menu');
+    logger.info('Opening menu');
     await this.click(this.selectors.menuButton);
   }
 
   async search(keyword: string): Promise<void> {
-    logger.info(`🔍 Tìm kiếm: ${keyword}`);
+    logger.info(`Searching for: ${keyword}`);
     await this.click(this.selectors.searchBar);
     await this.type(this.selectors.searchBar, keyword);
     await this.hideKeyboard();
   }
 
   async clickNotification(): Promise<void> {
-    logger.info('🖱️ Click notification');
+    logger.info('Clicking notification');
     await this.click(this.selectors.notificationIcon);
   }
 
   async logout(): Promise<void> {
-    logger.info('🚪 Đăng xuất');
+    logger.info('Logging out');
     await this.openMenu();
     await this.click(this.selectors.logoutButton);
   }
 
   async waitForPageLoad(timeout: number = 10000): Promise<void> {
-    logger.info('⏳ Chờ trang Home load');
+    logger.info('Waiting for home page to load');
     await this.wait.waitForVisible(this.selectors.welcomeText, timeout);
   }
 }
